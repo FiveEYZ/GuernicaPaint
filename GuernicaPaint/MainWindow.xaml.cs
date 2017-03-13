@@ -33,12 +33,30 @@ namespace GuernicaPaint
         private Line _line;
         private Polyline _polyLine;
 
-        private Brush SelectedColor { get; set; }
-        private Brush SelectedStrokeColor { get; set; }
+        private Brush _selectedColor;
+        private Brush _selectedStrokeColor;
+        private Brush SelectedColor
+        {
+            get { return _selectedColor; }
+            set
+            {
+                _selectedColor = value;
+                SelectPaintingColor.Background = _selectedColor;
+            }
+        }
+
+        private Brush SelectedStrokeColor
+        {
+            get { return _selectedStrokeColor; }
+            set
+            {
+                _selectedStrokeColor = value;
+                SelectStrokeColorCanvas.Background = _selectedStrokeColor;
+            }
+        }
         private Shape Rendershape = null;
 
         private Point currentPoint;
-        private Point _startPoint;
 
         private int StrokeSize { get; set; }
         private SelectedBorder _border = SelectedBorder.None;
@@ -60,6 +78,7 @@ namespace GuernicaPaint
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
         #region ShapeButtons
@@ -102,86 +121,72 @@ namespace GuernicaPaint
         private void btnRed_Click(object sender, RoutedEventArgs e)
         {
             SelectedColor = Brushes.Red;
-            SelectPaintingColor.Background = Brushes.Red;
         }
 
         private void btnRed_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             SelectedStrokeColor = Brushes.Red;
-            SelectStrokeColorCanvas.Background = Brushes.Red;
         }
 
         private void btnBlue_Click(object sender, RoutedEventArgs e)
         {
             SelectedColor = Brushes.Blue;
-            SelectPaintingColor.Background = Brushes.Blue;
         }
 
         private void btnBlue_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             SelectedStrokeColor = Brushes.Blue;
-            SelectStrokeColorCanvas.Background = Brushes.Blue;
         }
 
 
         private void btnGreen_Click(object sender, RoutedEventArgs e)
         {
             SelectedColor = Brushes.Green;
-            SelectPaintingColor.Background = Brushes.Green;
         }
 
         private void btnGreen_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             SelectedStrokeColor = Brushes.Green;
-            SelectStrokeColorCanvas.Background = Brushes.Green;
         }
 
         private void btnYellow_Click(object sender, RoutedEventArgs e)
         {
             SelectedColor = Brushes.Yellow;
-            SelectPaintingColor.Background = Brushes.Yellow;
         }
 
         private void btnYellow_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             SelectedStrokeColor = Brushes.Yellow;
-            SelectStrokeColorCanvas.Background = Brushes.Yellow;
-        }
-
-        private void btnWhite_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedColor = Brushes.White;
-            SelectPaintingColor.Background = Brushes.White;
-        }
-
-        private void btnWhite_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            SelectedStrokeColor = Brushes.White;
-            SelectStrokeColorCanvas.Background = Brushes.White;
-        }
-
-        private void btnBlack_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedColor = Brushes.Black;
-            SelectPaintingColor.Background = Brushes.Black;
-        }
-
-        private void btnBlack_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            SelectedStrokeColor = Brushes.Black;
-            SelectStrokeColorCanvas.Background = Brushes.Black;
         }
 
         private void btnOrange_Click(object sender, RoutedEventArgs e)
         {
             SelectedColor = Brushes.Orange;
-            SelectPaintingColor.Background = Brushes.Orange;
         }
 
         private void btnOrange_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             SelectedStrokeColor = Brushes.Orange;
-            SelectStrokeColorCanvas.Background = Brushes.Orange;
+        }
+
+        private void btnWhite_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedColor = Brushes.White;
+        }
+
+        private void btnWhite_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SelectedStrokeColor = Brushes.White;
+        }
+
+        private void btnBlack_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedColor = Brushes.Black;
+        }
+
+        private void btnBlack_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SelectedStrokeColor = Brushes.Black;
         }
         #endregion
 
@@ -205,7 +210,7 @@ namespace GuernicaPaint
             }
             else if (_shape == SelectedShape.Free)
             {
-                _startPoint = e.GetPosition(canvasArea);
+                currentPoint = e.GetPosition(canvasArea);
                 _polyLine = new Polyline();
                 _polyLine.Stroke = SelectedColor;
                 _polyLine.StrokeThickness = StrokeSize;
@@ -279,10 +284,10 @@ namespace GuernicaPaint
         {
             if (e.LeftButton == MouseButtonState.Pressed && isDrawing)
             {
-                Point currentPoint = e.GetPosition(canvasArea);
-                if (_startPoint != currentPoint)
+                Point endPoint = e.GetPosition(canvasArea);
+                if (currentPoint != endPoint)
                 {
-                    _polyLine.Points.Add(currentPoint);
+                    _polyLine.Points.Add(endPoint);
                 }
             }
         }
