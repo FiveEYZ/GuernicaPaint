@@ -10,16 +10,21 @@
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="30"/>
         </Style>
-        <Style TargetType="TextBlock">
+        <Style TargetType="ToggleButton">
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Background" Value="RosyBrown"/>
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style x:Key="BaseTextBlock" TargetType="TextBlock">
             <Setter Property="FontSize" Value="10"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
-        <Style x:Key="SpecialCanvas" TargetType="Canvas">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding SelectedColor}">
-                    <Setter Property="Background" Value="AliceBlue"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="CustomTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+            <Setter Property="FontSize" Value="7.5"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
         <Style TargetType="StackPanel">
@@ -61,19 +66,19 @@
         <StackPanel Grid.Column="1" Grid.Row="2">
             <ToggleButton x:Name="btnStroke" Content="Border"
                     Click="btnStroke_Click"/>
-            <Slider x:Name="StrokeSizeSlider" Minimum="1" Maximum="10" SmallChange="1" 
+            <Slider x:Name="StrokeSizeSlider" Minimum="1" Maximum="10" SmallChange="1"
                     ValueChanged="StrokeSizeSlider_ValueChanged"/>
-            <TextBlock x:Name="StrokeThicknessLabel" Text="{Binding StrokeSizeProp, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+            <TextBlock Style="{StaticResource BaseTextBlock}" Text="{Binding ElementName=StrokeSizeSlider, Path=Value, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:#}}"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="3" Grid.RowSpan="2">
-            <TextBlock Text="Selected Color"/>
+            <TextBlock Style="{StaticResource BaseTextBlock}" Text="Selected Color"/>
             <Canvas x:Name="SelectPaintingColor" Width="100" Height="20"/>
-            <TextBlock Text="Stroke Color"/>
+            <TextBlock Style="{StaticResource BaseTextBlock}" Text="Stroke Color"/>
             <Canvas x:Name="SelectStrokeColorCanvas" Width="100" Height="20"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="3" VerticalAlignment="Bottom">
-            <TextBlock Text="Left click to set fill color" FontSize="6.5" HorizontalAlignment="Center"/>
-            <TextBlock Text="Right click to set border color" FontSize="6.5" HorizontalAlignment="Center"/>
+            <!--<TextBlock Style="{StaticResource CustomTextBlock}" Text="Left click to set fill color"/>-->
+            <TextBlock Style="{StaticResource CustomTextBlock}" Text="Right click to set border color"/>
             <Button x:Name="btnRed" Background="Red" Height="30"
                     Click="btnRed_Click"
                     MouseRightButtonDown="btnRed_MouseRightButtonDown"/>

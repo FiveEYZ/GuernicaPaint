@@ -19,7 +19,7 @@ namespace GuernicaPaint
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private enum SelectedShape
         { None, Circle, Rectangle, Line, Free }
@@ -35,6 +35,7 @@ namespace GuernicaPaint
 
         private Brush _selectedColor;
         private Brush _selectedStrokeColor;
+
         private Brush SelectedColor
         {
             get { return _selectedColor; }
@@ -61,6 +62,8 @@ namespace GuernicaPaint
         private int StrokeSize { get; set; }
         private SelectedBorder _border = SelectedBorder.None;
         private SelectedShape _shape = SelectedShape.None;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private bool borderBool
         {
@@ -306,5 +309,6 @@ namespace GuernicaPaint
             }
         }
         #endregion
+
     }
 }
