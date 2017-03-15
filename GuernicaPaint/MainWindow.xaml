@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GuernicaPaint"
         mc:Ignorable="d"
         Title="Guernica Paint" Height="720" Width="1280">
     <Window.Resources>
@@ -25,7 +24,6 @@
         </Style>
         <Style x:Key="CustomTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
             <Setter Property="FontSize" Value="7.5"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
         <Style TargetType="StackPanel">
             <Setter Property="Background" Value="LightGray"/>
@@ -47,24 +45,24 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Canvas x:Name="canvasArea" Grid.Column="0" Grid.Row="0" Grid.RowSpan="7" Background="Gray"
+        <Canvas x:Name="CanvasArea" Grid.Column="0" Grid.Row="0" Grid.RowSpan="7" Background="Gray"
                 MouseLeftButtonDown="canvasArea_MouseLeftButtonDown"
                 MouseRightButtonDown="canvasArea_MouseRightButtonDown"
                 MouseDown="canvasArea_MouseDown"
                 MouseMove="canvasArea_MouseMove"
                 MouseUp="canvasArea_MouseUp"/>
         <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="3">
-            <Button x:Name="btnCircle" Content="Circle" ToolTip="Creates a Circle With size 40x40"
+            <Button Content="Circle" ToolTip="Creates a Circle With size 40x40"
                     Click="btnCircle_Click"/>
-            <Button x:Name="btnSquare" Content="Square" ToolTip="Creates a Square With size 45x45"
+            <Button Content="Square" ToolTip="Creates a Square With size 45x45"
                     Click="btnSquare_Click" />
-            <Button x:Name="btnLine" Content="Line" ToolTip="Creates a Line between two clicked points"
+            <Button Content="Line" ToolTip="Creates a Line between two clicked points"
                     Click="btnLine_Click"/>
-            <Button x:Name="btnFree" Content="Free" ToolTip="Free hand painting"
+            <Button Content="Free" ToolTip="Free hand painting"
                     Click="btnFree_Click"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="2">
-            <ToggleButton x:Name="btnStroke" Content="Border"
+            <ToggleButton Content="Border"
                     Click="btnStroke_Click"/>
             <Slider x:Name="StrokeSizeSlider" Minimum="1" Maximum="10" SmallChange="1"
                     ValueChanged="StrokeSizeSlider_ValueChanged"/>
@@ -77,27 +75,26 @@
             <Canvas x:Name="SelectStrokeColorCanvas" Width="100" Height="20"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="3" VerticalAlignment="Bottom">
-            <!--<TextBlock Style="{StaticResource CustomTextBlock}" Text="Left click to set fill color"/>-->
-            <TextBlock Style="{StaticResource CustomTextBlock}" Text="Right click to set border color"/>
-            <Button x:Name="btnRed" Background="Red" Height="30"
+            <TextBlock Style="{StaticResource CustomTextBlock}" Text="Right click to set _border color"/>
+            <Button Background="Red" Height="30"
                     Click="btnRed_Click"
                     MouseRightButtonDown="btnRed_MouseRightButtonDown"/>
-            <Button x:Name="btnBlue" Background="Blue" Height="30"
+            <Button Background="Blue" Height="30"
                     Click="btnBlue_Click"
                     MouseRightButtonDown="btnBlue_MouseRightButtonDown"/>
-            <Button x:Name="btnGreen" Background="Green" Height="30"
+            <Button Background="Green" Height="30"
                     Click="btnGreen_Click"
                     MouseRightButtonDown="btnGreen_MouseRightButtonDown"/>
-            <Button x:Name="btnYellow" Background="Yellow" Height="30"
+            <Button Background="Yellow" Height="30"
                     Click="btnYellow_Click"
                     MouseRightButtonDown="btnYellow_MouseRightButtonDown"/>
-            <Button x:Name="btnOrange" Background="Orange" Height="30" 
+            <Button Background="Orange" Height="30" 
                     Click="btnOrange_Click"
                     MouseRightButtonDown="btnOrange_MouseRightButtonDown"/>
-            <Button x:Name="btnWhite" Background="White" Height="30"
+            <Button Background="White" Height="30"
                     Click="btnWhite_Click"
                     MouseRightButtonDown="btnWhite_MouseRightButtonDown"/>
-            <Button x:Name="btnBlack" Background="Black" Height="30"
+            <Button Background="Black" Height="30"
                     Click="btnBlack_Click"
                     MouseRightButtonDown="btnBlack_MouseRightButtonDown"/>
         </StackPanel>

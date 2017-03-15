@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace GuernicaPaint
@@ -19,16 +10,15 @@ namespace GuernicaPaint
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : INotifyPropertyChanged
     {
         private enum SelectedShape
         { None, Circle, Rectangle, Line, Free }
-        private enum SelectedBorder
+        private enum SelectStrokeOrNot
         { None, Stroke }
 
-        private bool border;
-        private bool Press;
-        private bool isDrawing;
+        private bool _press;
+        private bool _isDrawing;
 
         private Line _line;
         private Polyline _polyLine;
@@ -55,31 +45,38 @@ namespace GuernicaPaint
                 SelectStrokeColorCanvas.Background = _selectedStrokeColor;
             }
         }
-        private Shape Rendershape = null;
 
-        private Point currentPoint;
+        private Shape _rendershape;
+
+        private Point _currentPoint;
 
         private int StrokeSize { get; set; }
-        private SelectedBorder _border = SelectedBorder.None;
-        private SelectedShape _shape = SelectedShape.None;
+
+        private SelectStrokeOrNot _strokeOrNot;
+        private SelectedShape _shape;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private bool borderBool
+
+        private bool _border;
+        private bool BorderBool
         {
             get
             {
-                return border;
+                return _border;
             }
             set
             {
-                border = value;
-                _border = border ? SelectedBorder.Stroke : SelectedBorder.None;
+                _border = value;
+                _strokeOrNot = _border ? SelectStrokeOrNot.Stroke : SelectStrokeOrNot.None;
             }
         }
 
         public MainWindow()
         {
+            _shape = SelectedShape.None;
+            _strokeOrNot = SelectStrokeOrNot.None;
+
             InitializeComponent();
             DataContext = this;
         }
@@ -87,32 +84,32 @@ namespace GuernicaPaint
         #region ShapeButtons
         private void btnCircle_Click(object sender, RoutedEventArgs e)
         {
-            isDrawing = false;
+            _isDrawing = false;
             _shape = SelectedShape.Circle;
         }
 
         private void btnSquare_Click(object sender, RoutedEventArgs e)
         {
-            isDrawing = false;
+            _isDrawing = false;
             _shape = SelectedShape.Rectangle;
         }
 
         private void btnLine_Click(object sender, RoutedEventArgs e)
         {
-            isDrawing = false;
+            _isDrawing = false;
             _shape = SelectedShape.Line;
         }
 
         private void btnFree_Click(object sender, RoutedEventArgs e)
         {
             _shape = SelectedShape.Free;
-            isDrawing = true;
+            _isDrawing = true;
         }
         #endregion
 
         private void btnStroke_Click(object sender, RoutedEventArgs e)
         {
-            borderBool = !borderBool;
+            BorderBool = !BorderBool;
         }
 
         private void StrokeSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -198,70 +195,70 @@ namespace GuernicaPaint
         {
             if (_shape == SelectedShape.Line)
             {
-                if (Press)
+                if (_press)
                 {
                     _line = new Line();
 
-                    _line.X1 = currentPoint.X;
-                    _line.Y1 = currentPoint.Y;
-                    _line.X2 = e.GetPosition(canvasArea).X;
-                    _line.Y2 = e.GetPosition(canvasArea).Y;
+                    _line.X1 = _currentPoint.X;
+                    _line.Y1 = _currentPoint.Y;
+                    _line.X2 = e.GetPosition(CanvasArea).X;
+                    _line.Y2 = e.GetPosition(CanvasArea).Y;
                     _line.Stroke = SelectedColor;
                     _line.StrokeThickness = StrokeSize;
-                    canvasArea.Children.Add(_line);
+                    CanvasArea.Children.Add(_line);
                 }
             }
             else if (_shape == SelectedShape.Free)
             {
-                currentPoint = e.GetPosition(canvasArea);
+                _currentPoint = e.GetPosition(CanvasArea);
                 _polyLine = new Polyline();
                 _polyLine.Stroke = SelectedColor;
                 _polyLine.StrokeThickness = StrokeSize;
 
-                canvasArea.Children.Add(_polyLine);
+                CanvasArea.Children.Add(_polyLine);
             }
             else
             {
                 switch (_shape)
                 {
                     case SelectedShape.Circle:
-                        if (_border == SelectedBorder.Stroke)
+                        if (_strokeOrNot == SelectStrokeOrNot.Stroke)
                         {
-                            Rendershape = new Ellipse() { Height = 40, Width = 40 };
-                            Rendershape.Stroke = SelectedStrokeColor;
-                            Rendershape.Fill = SelectedColor;
-                            Rendershape.StrokeThickness = StrokeSize;
+                            _rendershape = new Ellipse() { Height = 40, Width = 40 };
+                            _rendershape.Stroke = SelectedStrokeColor;
+                            _rendershape.Fill = SelectedColor;
+                            _rendershape.StrokeThickness = StrokeSize;
                             break;
                         }
                         else
                         {
-                            Rendershape = new Ellipse() { Height = 40, Width = 40 };
-                            Rendershape.Fill = SelectedColor;
+                            _rendershape = new Ellipse() { Height = 40, Width = 40 };
+                            _rendershape.Fill = SelectedColor;
 
                             break;
                         }
                     case SelectedShape.Rectangle:
-                        if (border)
+                        if (_border)
                         {
-                            Rendershape = new Rectangle() { Height = 45, Width = 45 };
-                            Rendershape.Fill = SelectedColor;
-                            Rendershape.Stroke = SelectedStrokeColor;
-                            Rendershape.StrokeThickness = StrokeSize;
+                            _rendershape = new Rectangle() { Height = 45, Width = 45 };
+                            _rendershape.Fill = SelectedColor;
+                            _rendershape.Stroke = SelectedStrokeColor;
+                            _rendershape.StrokeThickness = StrokeSize;
                             break;
                         }
                         else
                         {
-                            Rendershape = new Rectangle() { Height = 45, Width = 45 };
-                            Rendershape.Fill = SelectedColor;
+                            _rendershape = new Rectangle() { Height = 45, Width = 45 };
+                            _rendershape.Fill = SelectedColor;
                             break;
                         }
                     default:
                         return;
                 }
-                Canvas.SetLeft(Rendershape, e.GetPosition(canvasArea).X);
-                Canvas.SetTop(Rendershape, e.GetPosition(canvasArea).Y);
+                Canvas.SetLeft(_rendershape, e.GetPosition(CanvasArea).X);
+                Canvas.SetTop(_rendershape, e.GetPosition(CanvasArea).Y);
 
-                canvasArea.Children.Add(Rendershape);
+                CanvasArea.Children.Add(_rendershape);
 
             }
         }
@@ -269,26 +266,26 @@ namespace GuernicaPaint
         private void canvasArea_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point pt = e.GetPosition((Canvas)sender);
-            HitTestResult result = VisualTreeHelper.HitTest(canvasArea, pt);
+            HitTestResult result = VisualTreeHelper.HitTest(CanvasArea, pt);
 
             if (result != null)
             {
-                canvasArea.Children.Remove(result.VisualHit as Shape);
+                CanvasArea.Children.Remove(result.VisualHit as Shape);
             }
         }
 
         private void canvasArea_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ButtonState == MouseButtonState.Pressed)
-                currentPoint = e.GetPosition(canvasArea);
+                _currentPoint = e.GetPosition(CanvasArea);
         }
 
         private void canvasArea_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && isDrawing)
+            if (e.LeftButton == MouseButtonState.Pressed && _isDrawing)
             {
-                Point endPoint = e.GetPosition(canvasArea);
-                if (currentPoint != endPoint)
+                Point endPoint = e.GetPosition(CanvasArea);
+                if (_currentPoint != endPoint)
                 {
                     _polyLine.Points.Add(endPoint);
                 }
@@ -297,15 +294,15 @@ namespace GuernicaPaint
 
         private void canvasArea_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (Press)
+            if (_press)
             {
-                Press = false;
+                _press = false;
                 _line = new Line();
             }
             else
             {
-                currentPoint = e.GetPosition(canvasArea);
-                Press = true;
+                _currentPoint = e.GetPosition(CanvasArea);
+                _press = true;
             }
         }
         #endregion
