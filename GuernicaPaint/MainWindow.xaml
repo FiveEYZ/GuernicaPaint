@@ -75,7 +75,7 @@
             <Canvas x:Name="SelectStrokeColorCanvas" Width="100" Height="20"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="3" VerticalAlignment="Bottom">
-            <TextBlock Style="{StaticResource CustomTextBlock}" Text="Right click to set _border color"/>
+            <TextBlock Style="{StaticResource CustomTextBlock}" Text="Right click to set border color"/>
             <Button Background="Red" Height="30"
                     Click="btnRed_Click"
                     MouseRightButtonDown="btnRed_MouseRightButtonDown"/>

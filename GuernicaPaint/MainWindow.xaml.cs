@@ -10,7 +10,7 @@ namespace GuernicaPaint
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : INotifyPropertyChanged
+    public partial class MainWindow
     {
         private enum SelectedShape
         { None, Circle, Rectangle, Line, Free }
@@ -55,9 +55,6 @@ namespace GuernicaPaint
         private SelectStrokeOrNot _strokeOrNot;
         private SelectedShape _shape;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
         private bool _border;
         private bool BorderBool
         {
@@ -78,7 +75,6 @@ namespace GuernicaPaint
             _strokeOrNot = SelectStrokeOrNot.None;
 
             InitializeComponent();
-            DataContext = this;
         }
 
         #region ShapeButtons
