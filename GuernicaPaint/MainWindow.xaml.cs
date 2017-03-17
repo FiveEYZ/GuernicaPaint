@@ -261,8 +261,8 @@ namespace GuernicaPaint
 
         private void canvasArea_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Point pt = e.GetPosition((Canvas)sender);
-            HitTestResult result = VisualTreeHelper.HitTest(CanvasArea, pt);
+            var pt = e.GetPosition((Canvas)sender);
+            var result = VisualTreeHelper.HitTest(CanvasArea, pt);
 
             if (result != null)
             {
@@ -280,7 +280,7 @@ namespace GuernicaPaint
         {
             if (e.LeftButton == MouseButtonState.Pressed && _isDrawing)
             {
-                Point endPoint = e.GetPosition(CanvasArea);
+                var endPoint = e.GetPosition(CanvasArea);
                 if (_currentPoint != endPoint)
                 {
                     _polyLine.Points.Add(endPoint);
