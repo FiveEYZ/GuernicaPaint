@@ -1,9 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using ColorPickerLib;
 
 namespace GuernicaPaint
 {
@@ -65,16 +67,28 @@ namespace GuernicaPaint
             set
             {
                 _border = value;
-                _strokeOrNot = _border ? SelectStrokeOrNot.Stroke : SelectStrokeOrNot.None;
+                OnPropertyChanged();
+
             }
+        }
+
+        private void OnPropertyChanged()
+        {
+            throw new NotImplementedException();
         }
 
         public MainWindow()
         {
-            _shape = SelectedShape.None;
+            _shape = SelectedShape.Free;
             _strokeOrNot = SelectStrokeOrNot.None;
 
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            SelectedColor = MainColorPicked.Fill;
+            SelectedStrokeColor = SecColorPicked.Fill;
         }
 
         #region ShapeButtons
@@ -112,79 +126,6 @@ namespace GuernicaPaint
         {
             StrokeSize = (int)StrokeSizeSlider.Value;
         }
-
-        #region ColorButtons
-        private void btnRed_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedColor = Brushes.Red;
-        }
-
-        private void btnRed_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            SelectedStrokeColor = Brushes.Red;
-        }
-
-        private void btnBlue_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedColor = Brushes.Blue;
-        }
-
-        private void btnBlue_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            SelectedStrokeColor = Brushes.Blue;
-        }
-
-
-        private void btnGreen_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedColor = Brushes.Green;
-        }
-
-        private void btnGreen_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            SelectedStrokeColor = Brushes.Green;
-        }
-
-        private void btnYellow_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedColor = Brushes.Yellow;
-        }
-
-        private void btnYellow_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            SelectedStrokeColor = Brushes.Yellow;
-        }
-
-        private void btnOrange_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedColor = Brushes.Orange;
-        }
-
-        private void btnOrange_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            SelectedStrokeColor = Brushes.Orange;
-        }
-
-        private void btnWhite_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedColor = Brushes.White;
-        }
-
-        private void btnWhite_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            SelectedStrokeColor = Brushes.White;
-        }
-
-        private void btnBlack_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedColor = Brushes.Black;
-        }
-
-        private void btnBlack_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            SelectedStrokeColor = Brushes.Black;
-        }
-        #endregion
 
         #region CanvasMouseEvents
         private void canvasArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -302,6 +243,30 @@ namespace GuernicaPaint
             }
         }
         #endregion
+
+        private void btnMainColorPick_Click(object sender, RoutedEventArgs e)
+        {
+            ColorDialog colorDialog = new ColorDialog();
+            colorDialog.SelectedColor = ((SolidColorBrush)this.MainColorPicked.Fill).Color;
+            colorDialog.Owner = this;
+            if ((bool)colorDialog.ShowDialog())
+            {
+                MainColorPicked.Fill = new SolidColorBrush(colorDialog.SelectedColor);
+                SelectedColor = new SolidColorBrush(colorDialog.SelectedColor);
+            }
+        }
+
+        private void btnSecColorPick_Click(object sender, RoutedEventArgs e)
+        {
+            ColorDialog colorDialog = new ColorDialog();
+            colorDialog.SelectedColor = ((SolidColorBrush)this.SecColorPicked.Fill).Color;
+            colorDialog.Owner = this;
+            if ((bool)colorDialog.ShowDialog())
+            {
+                SecColorPicked.Fill = new SolidColorBrush(colorDialog.SelectedColor);
+                SelectedStrokeColor = new SolidColorBrush(colorDialog.SelectedColor);
+            }
+        }
 
     }
 }

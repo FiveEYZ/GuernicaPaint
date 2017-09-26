@@ -123,6 +123,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Desktop\WPFColorPicker\WPFColorPickerLib\ColorPickerLib.csproj">
+      <Project>{587acfba-1a74-4a38-98c4-69442eccb7dc}</Project>
+      <Name>ColorPickerLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Guernica Paint" Height="720" Width="1280">
+        Title="Guernica Paint" Height="720" Width="1280" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="30"/>
@@ -74,29 +74,16 @@
             <TextBlock Style="{StaticResource BaseTextBlock}" Text="Stroke Color"/>
             <Canvas x:Name="SelectStrokeColorCanvas" Width="100" Height="20"/>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="3" VerticalAlignment="Bottom">
-            <TextBlock Style="{StaticResource CustomTextBlock}" Text="Right click to set border color"/>
-            <Button Background="Red" Height="30"
-                    Click="btnRed_Click"
-                    MouseRightButtonDown="btnRed_MouseRightButtonDown"/>
-            <Button Background="Blue" Height="30"
-                    Click="btnBlue_Click"
-                    MouseRightButtonDown="btnBlue_MouseRightButtonDown"/>
-            <Button Background="Green" Height="30"
-                    Click="btnGreen_Click"
-                    MouseRightButtonDown="btnGreen_MouseRightButtonDown"/>
-            <Button Background="Yellow" Height="30"
-                    Click="btnYellow_Click"
-                    MouseRightButtonDown="btnYellow_MouseRightButtonDown"/>
-            <Button Background="Orange" Height="30" 
-                    Click="btnOrange_Click"
-                    MouseRightButtonDown="btnOrange_MouseRightButtonDown"/>
-            <Button Background="White" Height="30"
-                    Click="btnWhite_Click"
-                    MouseRightButtonDown="btnWhite_MouseRightButtonDown"/>
-            <Button Background="Black" Height="30"
-                    Click="btnBlack_Click"
-                    MouseRightButtonDown="btnBlack_MouseRightButtonDown"/>
+        <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="3" VerticalAlignment="Top"/>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="197" Grid.Row="5" Grid.RowSpan="2">
+            <Button x:Name="btnMainColorPick" Content="color 1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Click="btnMainColorPick_Click"/>
+            <Rectangle x:Name="MainColorPicked" Width="100" Height="50" 
+            Fill="Black" HorizontalAlignment="Center" 
+            VerticalAlignment="Center"/>
+            <Button x:Name="btnSecColorPick" Content="color 2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="100" Click="btnSecColorPick_Click"/>
+            <Rectangle x:Name="SecColorPicked" Width="100" Height="50" 
+            Fill="White" HorizontalAlignment="Center" 
+            VerticalAlignment="Bottom"/>
         </StackPanel>
     </Grid>
 </Window>
